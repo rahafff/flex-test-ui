@@ -7,7 +7,8 @@ import 'package:test_ui/main_module/discounts_screen/discount_card.dart';
 
 class DiscountDetails extends StatelessWidget {
   final double currentPoint;
-  const DiscountDetails({super.key, required this.currentPoint});
+  final bool isEnded;
+  const DiscountDetails({super.key, required this.currentPoint,required this.isEnded});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class DiscountDetails extends StatelessWidget {
                children: [
               header(context),
                  SizedBox(height: 20,),
-               TierProgressWidget(currentPoint,false),
+               TierProgressWidget(currentPoint,false, isEnded),
 
               Padding(
                 padding: const EdgeInsets.all(15.0),

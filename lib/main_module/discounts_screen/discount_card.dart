@@ -24,7 +24,7 @@ class DiscountCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-       Navigator.push(context,MaterialPageRoute(builder: (context) => DiscountDetails(currentPoint: currentPoint,),));
+       Navigator.push(context,MaterialPageRoute(builder: (context) => DiscountDetails(currentPoint: currentPoint,isEnded: isEnded,),));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -114,7 +114,7 @@ class DiscountCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 10),
-                TierProgressWidget(currentPoint,true),
+                TierProgressWidget(currentPoint,true,isEnded),
                 Text.rich(
                   TextSpan(
                     children: [
@@ -182,8 +182,9 @@ class DiscountCard extends StatelessWidget {
 class TierProgressWidget extends StatelessWidget {
   final double currentPoints;
   final bool showArrow;
+  final bool isEnded;
 
-  TierProgressWidget(this.currentPoints, this.showArrow);
+  TierProgressWidget(this.currentPoints, this.showArrow ,this.isEnded);
 
   List<Tier> tiers = [
     Tier(name: '1000', pointThreshold: 1000),
@@ -202,6 +203,10 @@ class TierProgressWidget extends StatelessWidget {
         Row(
           children: [
             Expanded(
+                flex: 1,
+                child: Spacer()),
+            Expanded(
+              flex: 6,
               child:  getStepName(context),
             ),
             Visibility(
@@ -216,7 +221,7 @@ class TierProgressWidget extends StatelessWidget {
             alignment: AlignmentDirectional.topCenter,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(vertical: 14),
                 child: Stack(
                   children: [
                     Container(
@@ -231,7 +236,7 @@ class TierProgressWidget extends StatelessWidget {
                       child: Container(
                         height: 12,
                         decoration: BoxDecoration(
-                          color: Colors.amber,
+                          color: isEnded ? AppColors.silverTextColor : AppColors.primaryColor,
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
@@ -262,13 +267,13 @@ class TierProgressWidget extends StatelessWidget {
                       children:
                           tiers.map((e) {
                             return CircleAvatar(
-                              radius: 23,
+                              radius: 18,
                               backgroundColor: AppColors.silverDarkColor,
                               child: CircleAvatar(
-                                radius: 20,
+                                radius: 16,
                                 backgroundColor:
                                     currentPoints >= e.pointThreshold
-                                        ? AppColors.primaryColor
+                                        ? isEnded ? AppColors.silverTextColor : AppColors.primaryColor
                                         : AppColors.silverDarkColor,
                                 child: Text(
                                   e.name,
@@ -297,8 +302,6 @@ class TierProgressWidget extends StatelessWidget {
   }
 
   Widget getStepName(BuildContext context) {
-
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
